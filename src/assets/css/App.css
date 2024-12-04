@@ -1,0 +1,39 @@
+/* LAYOUT E DETTAGLI */
+
+.container {
+  margin: 80px 30px;
+}
+
+.list-item-container {
+  border: 1px gray solid;
+  margin: 20px 0;
+  padding: 10px 25px;
+  border-radius: 7px;
+  max-width: fit-content;
+  cursor: pointer;
+}
+
+.list-item-container p {
+  padding: 5px 0;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  border: 1px gray solid;
+  border-radius: 7px;
+  width: fit-content;
+}
+
+.article-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.opaque {
+  opacity: 0.5;
+  margin: 10px auto;
+}
