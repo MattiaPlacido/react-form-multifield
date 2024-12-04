@@ -7,14 +7,23 @@
 .list-item-container {
   border: 1px gray solid;
   margin: 20px 0;
-  padding: 10px 25px;
+  padding: 10px 15px;
   border-radius: 7px;
-  max-width: fit-content;
+  max-width: 30%;
   cursor: pointer;
 }
 
 .list-item-container p {
   padding: 5px 0;
+}
+
+.list-item-container img {
+  max-width: -webkit-fill-available;
+}
+
+.list-item-container .item-title {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .form-container {

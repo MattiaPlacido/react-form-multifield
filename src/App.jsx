@@ -22,18 +22,28 @@ const getNextId = (list) => {
 function App() {
   //variabili reattive
   const [items, setItems] = useState(dataList);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
+  const [articleFormData, setArticleFormData] = useState({
+    id: -1,
+    title: "",
+    content: "",
+    image: "",
+    category: "None",
+    published: false,
+  });
 
   //HANDLERS
-  const handleListItemClick = (id) => {
-    //setto la lista ad una nuova lista che filtra per tutto tranne l'oggetto da eliminare
-    const cleanList = items.filter((item) => item.id !== id);
-    setItems(cleanList);
-  };
+  function handleArticleFormData(e) {
+    e.preventDefault();
+    setArticleFormData((formData) => ({
+      ...formData,
+      [e.target.name]: e.target.value,
+    }));
+  }
 
   const handleFormSubmit = (e) => {
-    if (!title || !author) {
+    const { title, content, image } = articleFormData;
+
+    if (!title || !content) {
       alert("Sono presenti dei campi non compilati");
       return;
     }
@@ -44,44 +54,59 @@ function App() {
     newList.push({
       id: getNextId(items),
       title: title,
-      author: author,
+      content: content,
+      image: image,
       published: true,
     });
+
     setItems(newList);
+
+    setArticleFormData({
+      title: "",
+      content: "",
+      image: "",
+      category: "None",
+      published: true,
+    });
   };
 
-  const handleTitleInputChange = (event) => setTitle(event.target.value);
-
-  const handleAuthorInputChange = (event) => setAuthor(event.target.value);
+  const handleListItemClick = (id) => {
+    //setto la lista ad una nuova lista che filtra per tutto tranne l'oggetto da eliminare
+    const cleanList = items.filter((item) => item.id !== id);
+    setItems(cleanList);
+  };
 
   //DOM
   return (
     <div className="container">
       <div className="form-container">
         <p>Nuovo articolo</p>
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit} className="form-container">
           <br />
           <input
             type="text"
             id="article-title"
-            value={title}
-            onChange={handleTitleInputChange}
+            name="title"
+            value={articleFormData.title}
+            onChange={handleArticleFormData}
             placeholder="Titolo"
           />
           <br />
           <input
             type="text"
-            id="article-author"
-            value={author}
-            onChange={handleAuthorInputChange}
-            placeholder="Autore"
+            id="article-content"
+            name="content"
+            value={articleFormData.content}
+            onChange={handleArticleFormData}
+            placeholder="Content"
           />
           <br />
           <input
             type="text"
             id="article-image"
-            value={author}
-            onChange={handleAuthorInputChange}
+            name="image"
+            value={articleFormData.image}
+            onChange={handleArticleFormData}
             placeholder="Immagine"
           />
           <br />
@@ -105,12 +130,12 @@ function App() {
             key={item.id}
             onClick={() => handleListItemClick(item.id)}
           >
-            <p>
-              Titolo articolo : <b>{item.title}</b>
-            </p>
-            <p>
-              Autore : <b>{item.author}</b>
-            </p>
+            <p className="item-title">{item.title}</p>
+            <img
+              src={!item.image ? "https://placehold.co/600x400" : item.image}
+            />
+
+            <p>{item.content}</p>
             <p>Id : {item.id}</p>
           </div>
         ))}
