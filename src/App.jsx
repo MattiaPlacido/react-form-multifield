@@ -41,8 +41,8 @@ const initialFormData = {
   title: "",
   content: "",
   image: "",
-  category: "Sport",
-  published: false,
+  category: "sport",
+  published: true,
 };
 
 function App() {
@@ -51,9 +51,9 @@ function App() {
   const [articleFormData, setArticleFormData] = useState(initialFormData);
 
   //use effect
-  useEffect(() => {
-    alert("Lo stato di pubblicazione dell'articolo è stato modificato.");
-  }, [articleFormData.published]);
+  // useEffect(() => {
+  //   alert("Lo stato di pubblicazione dell'articolo è stato modificato.");
+  // }, [articleFormData.published]);
 
   //HANDLERS
   function handleArticleFormData(e) {
@@ -67,7 +67,7 @@ function App() {
   }
 
   const handleFormSubmit = (e) => {
-    const { title, content, image, published } = articleFormData;
+    const { title, content, image, published, category } = articleFormData;
 
     if (!title || !content) {
       alert("Sono presenti dei campi non compilati");
@@ -83,6 +83,7 @@ function App() {
       content: content,
       image: image,
       published: published,
+      category: category,
     });
 
     setItems(newList);
@@ -116,7 +117,7 @@ function App() {
           name="content"
           value={articleFormData.content}
           onChange={handleArticleFormData}
-          placeholder="Content"
+          placeholder="Contenuto"
         />
         <br />
         <input
