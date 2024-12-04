@@ -1,7 +1,11 @@
 /* LAYOUT E DETTAGLI */
 
-.container {
+.wrapper {
   margin: 80px 30px;
+}
+
+.wrapper > * {
+  margin: 0 auto;
 }
 
 .list-item-container {
@@ -9,12 +13,22 @@
   margin: 20px 0;
   padding: 10px 15px;
   border-radius: 7px;
-  max-width: 30%;
+  max-width: 32%;
   cursor: pointer;
 }
 
-.list-item-container p {
-  padding: 5px 0;
+.list-item-container > * {
+  margin: 10px 0;
+}
+
+.list-item-badge {
+  border-radius: 7px;
+  padding: 5px 10px;
+}
+
+.list-item-description {
+  display: flex;
+  gap: 20px;
 }
 
 .list-item-container img {
@@ -30,10 +44,10 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
-  gap: 20px;
   border: 1px gray solid;
   border-radius: 7px;
   width: fit-content;
+  margin-top: 20px;
 }
 
 .article-container {

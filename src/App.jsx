@@ -1,5 +1,5 @@
 //MODULI
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./assets/css/App.css";
 import { list as dataList } from "./assets/data/data.js";
 
@@ -19,29 +19,55 @@ const getNextId = (list) => {
   return lastId;
 };
 
+const getBadgeColor = (category) => {
+  switch (category.toLowerCase()) {
+    case "music":
+      return "bg-yellow";
+    case "news":
+      return "bg-red";
+    case "gaming":
+      return "bg-green";
+    case "sport":
+      return "bg-cyan";
+    case "politics":
+      return "bg-orange";
+    default:
+      return "";
+  }
+};
+
+//stato di default del form
+const initialFormData = {
+  title: "",
+  content: "",
+  image: "",
+  category: "Sport",
+  published: false,
+};
+
 function App() {
   //variabili reattive
   const [items, setItems] = useState(dataList);
-  const [articleFormData, setArticleFormData] = useState({
-    id: -1,
-    title: "",
-    content: "",
-    image: "",
-    category: "None",
-    published: false,
-  });
+  const [articleFormData, setArticleFormData] = useState(initialFormData);
+
+  //use effect
+  useEffect(() => {
+    alert("Lo stato di pubblicazione dell'articolo è stato modificato.");
+  }, [articleFormData.published]);
 
   //HANDLERS
   function handleArticleFormData(e) {
-    e.preventDefault();
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+
     setArticleFormData((formData) => ({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     }));
   }
 
   const handleFormSubmit = (e) => {
-    const { title, content, image } = articleFormData;
+    const { title, content, image, published } = articleFormData;
 
     if (!title || !content) {
       alert("Sono presenti dei campi non compilati");
@@ -52,22 +78,16 @@ function App() {
     //creo una nuova lista che conterrà quella vecchia + l'oggetto nuovo
     const newList = [...items];
     newList.push({
-      id: getNextId(items),
+      id: getNextId([...items]),
       title: title,
       content: content,
       image: image,
-      published: true,
+      published: published,
     });
 
     setItems(newList);
 
-    setArticleFormData({
-      title: "",
-      content: "",
-      image: "",
-      category: "None",
-      published: true,
-    });
+    setArticleFormData(initialFormData);
   };
 
   const handleListItemClick = (id) => {
@@ -78,45 +98,61 @@ function App() {
 
   //DOM
   return (
-    <div className="container">
-      <div className="form-container">
-        <p>Nuovo articolo</p>
-        <form onSubmit={handleFormSubmit} className="form-container">
-          <br />
+    <div className="wrapper">
+      <form onSubmit={handleFormSubmit} className="form-container">
+        <br />
+        <input
+          type="text"
+          id="article-title"
+          name="title"
+          value={articleFormData.title}
+          onChange={handleArticleFormData}
+          placeholder="Titolo"
+        />
+        <br />
+        <input
+          type="text"
+          id="article-content"
+          name="content"
+          value={articleFormData.content}
+          onChange={handleArticleFormData}
+          placeholder="Content"
+        />
+        <br />
+        <input
+          type="text"
+          id="article-image"
+          name="image"
+          value={articleFormData.image}
+          onChange={handleArticleFormData}
+          placeholder="Immagine"
+        />
+        <br />
+        <select
+          name="category"
+          id="category"
+          value={articleFormData.category}
+          onChange={handleArticleFormData}
+        >
+          <option value="music">Musica</option>
+          <option value="news">News</option>
+          <option value="gaming">Gaming</option>
+          <option value="sport">Sport</option>
+          <option value="politics">Politica</option>
+        </select>
+        <br />
+        <div>
           <input
-            type="text"
-            id="article-title"
-            name="title"
-            value={articleFormData.title}
+            type="checkbox"
+            checked={articleFormData.published}
             onChange={handleArticleFormData}
-            placeholder="Titolo"
+            name="published"
           />
-          <br />
-          <input
-            type="text"
-            id="article-content"
-            name="content"
-            value={articleFormData.content}
-            onChange={handleArticleFormData}
-            placeholder="Content"
-          />
-          <br />
-          <input
-            type="text"
-            id="article-image"
-            name="image"
-            value={articleFormData.image}
-            onChange={handleArticleFormData}
-            placeholder="Immagine"
-          />
-          <br />
-          <input type="checkbox" value="article-state" />
-          <label for="article-state">Pubblica</label>
-          <br /> <br />
-          <button type="submit">Invia</button>
-        </form>
-      </div>
-
+          <label htmlFor="article-state">Pubblica</label>
+        </div>
+        <br /> <br />
+        <button type="submit">Invia</button>
+      </form>
       <br></br>
       <hr></hr>
       <p className="opaque">Clicca gli articoli per eliminarli</p>
@@ -131,12 +167,17 @@ function App() {
             onClick={() => handleListItemClick(item.id)}
           >
             <p className="item-title">{item.title}</p>
-            <img
-              src={!item.image ? "https://placehold.co/600x400" : item.image}
-            />
+            <img src={item.image || "https://placehold.co/600x400"} />
 
             <p>{item.content}</p>
-            <p>Id : {item.id}</p>
+            <div className="list-item-description">
+              <p>Id : {item.id}</p>
+              <span
+                className={`list-item-badge ${getBadgeColor(item.category)}`}
+              >
+                {item.category}
+              </span>
+            </div>
           </div>
         ))}
       </div>

@@ -42,6 +42,6 @@ export const list = [
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit animi perspiciatis consequuntur vero at necessitatibus nostrum blanditiis, natus eum? Numquam nulla asperiores cumque, repudiandae odit alias aliquam nihil earum commodi.",
     image: "",
     published: true,
-    category: "Politica",
+    category: "Politics",
   },
 ];
